@@ -29,7 +29,6 @@ const Mindfulness = () => {
       options,
       (callbackError: string, results: HealthValue) => {
         setMindfulness(Math.round(results.value));
-        console.error('getDistanceWalkingRunning', results);
         if (callbackError) {
           console.error(callbackError);
         }
@@ -39,7 +38,6 @@ const Mindfulness = () => {
 
   useEffect(() => {
     fetchMindFullness();
-    console.error('getDistanceWalkingRunningdate', startDate);
   }, [fetchMindFullness, startDate, endDate]);
 
   return (

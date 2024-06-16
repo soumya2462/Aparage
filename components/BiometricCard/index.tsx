@@ -1,7 +1,16 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View} from 'react-native';
-import {Avatar, Card, Text, useTheme} from 'react-native-paper';
+import {
+  Avatar,
+  Card,
+  MD3Colors,
+  ProgressBar,
+  Text,
+  useTheme,
+} from 'react-native-paper';
+import CircularProgress from 'react-native-circular-progress-indicator';
 
 const Icon = ({icon, color}: {icon: string; color?: string}) => {
   const theme = useTheme();
@@ -33,6 +42,10 @@ const BiometricCard: React.FC<BiometricCardProps> = ({
   onPress,
 }) => {
   const theme = useTheme();
+  function alert(arg0: string) {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <Card
       onPress={onPress}
@@ -43,35 +56,55 @@ const BiometricCard: React.FC<BiometricCardProps> = ({
         shadowColor: 'rgba(0,0,0,0.1)',
         shadowOffset: {width: 0, height: 0},
       }}>
-      <Card.Content style={{display: 'flex', flexDirection: 'column'}}>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 8,
-            alignItems: 'center',
-          }}>
-          {!!icon && <Icon icon={icon} color={iconColor} />}
-          <Text
-            variant="titleMedium"
+      <Card.Content style={{display: 'flex', flexDirection: 'row'}}>
+        <View style={{width: '75%', flexDirection: 'column'}}>
+          <View
             style={{
-              fontWeight: '700',
-              color: iconColor || theme.colors.primary,
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 8,
+              alignItems: 'center',
             }}>
-            {title}
-          </Text>
+            {!!icon && <Icon icon={icon} color={iconColor} />}
+            <Text
+              variant="titleMedium"
+              style={{
+                fontWeight: '700',
+                color: iconColor || theme.colors.primary,
+              }}>
+              {title}
+            </Text>
+          </View>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 8,
+              alignItems: 'baseline',
+            }}>
+            <Text style={{fontSize: 42}}>{value}</Text>
+            <Text style={{fontSize: 18, fontWeight: '500', opacity: 0.8}}>
+              {unit}
+            </Text>
+          </View>
         </View>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 8,
-            alignItems: 'baseline',
-          }}>
-          <Text style={{fontSize: 42}}>{value}</Text>
-          <Text style={{fontSize: 18, fontWeight: '500', opacity: 0.8}}>
-            {unit}
-          </Text>
+
+        <View style={{width: '25%'}}>
+          <CircularProgress
+            value={value}
+            radius={30}
+            inActiveStrokeOpacity={0.5}
+            activeStrokeWidth={15}
+            inActiveStrokeWidth={20}
+            progressValueStyle={{fontWeight: '100', color: 'white'}}
+            activeStrokeSecondaryColor="yellow"
+            inActiveStrokeColor="black"
+            duration={5000}
+            dashedStrokeConfig={{
+              count: 50,
+              width: 4,
+            }}
+          />
         </View>
       </Card.Content>
     </Card>

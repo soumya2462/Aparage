@@ -3,8 +3,10 @@ import {PaperProvider} from 'react-native-paper';
 import {useColorScheme} from 'react-native';
 import {getTheme} from './theme';
 import Home from './pages/Home';
+import {Notifications} from 'react-native-notifications';
 
 import AppleHealthKit, {HealthKitPermissions} from 'react-native-health';
+import {useEffect} from 'react';
 
 /* Permission options */
 const permissions = {
@@ -34,6 +36,22 @@ AppleHealthKit?.initHealthKit(permissions, (error: string) => {
 
 export default function App() {
   const colorScheme = useColorScheme();
+  useEffect(() => {
+    // Request permissions on mount
+    Notifications.registerRemoteNotifications();
+    Notifications.events().registerRemoteNotificationsRegistered(event => {
+      console.log('Device Token Received', event.deviceToken);
+    });
+
+    Notifications.events().registerNotificationReceivedForeground(
+      (notification, completion) => {
+        console.log(
+          `Notification received in foreground: ${notification.title} : ${notification.body}`,
+        );
+        completion({alert: true, sound: true, badge: false});
+      },
+    );
+  }, []);
   return (
     <PaperProvider theme={getTheme(colorScheme)}>
       <Home />
