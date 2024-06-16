@@ -1,43 +1,20 @@
-/* eslint-disable react/react-in-jsx-scope */
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import {PaperProvider} from 'react-native-paper';
 import {useColorScheme} from 'react-native';
 import {getTheme} from './theme';
 import Home from './pages/Home';
+import Splash from './pages/Splash';
 import {Notifications} from 'react-native-notifications';
 
-import AppleHealthKit, {HealthKitPermissions} from 'react-native-health';
-import {useEffect} from 'react';
-
-/* Permission options */
-const permissions = {
-  permissions: {
-    read: [
-      AppleHealthKit.Constants.Permissions.HeartRate,
-      AppleHealthKit.Constants.Permissions.Steps,
-      AppleHealthKit.Constants.Permissions.MindfulSession,
-      AppleHealthKit.Constants.Permissions.SleepAnalysis,
-      AppleHealthKit.Constants.Permissions.WalkingHeartRateAverage,
-      AppleHealthKit.Constants.Permissions.DistanceWalkingRunning,
-      AppleHealthKit.Constants.Permissions.DistanceCycling,
-      AppleHealthKit.Constants.Permissions.DistanceSwimming,
-      AppleHealthKit.Constants.Permissions.BloodGlucose,
-    ],
-  },
-} as HealthKitPermissions;
-
-AppleHealthKit?.initHealthKit(permissions, (error: string) => {
-  /* Called after we receive a response from the system */
-
-  if (error) {
-    console.log('[ERROR] Cannot grant permissions!', error);
-    return;
-  }
-});
+const Stack = createStackNavigator();
 
 export default function App() {
   const colorScheme = useColorScheme();
+
   useEffect(() => {
-    // Request permissions on mount
+    // Register for remote notifications
     Notifications.registerRemoteNotifications();
     Notifications.events().registerRemoteNotificationsRegistered(event => {
       console.log('Device Token Received', event.deviceToken);
@@ -52,9 +29,17 @@ export default function App() {
       },
     );
   }, []);
+
   return (
-    <PaperProvider theme={getTheme(colorScheme)}>
-      <Home />
+    <PaperProvider children={undefined}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Splash"
+          screenOptions={{headerShown: false}}>
+          <Stack.Screen name="Splash" component={Splash} />
+          <Stack.Screen name="Home" component={Home} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </PaperProvider>
   );
 }

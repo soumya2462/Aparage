@@ -3,11 +3,10 @@
 import {useCallback, useEffect, useState} from 'react';
 import BiometricCard from '../BiometricCard';
 import AppleHealthKit, {HealthValue} from 'react-native-health';
-import {NativeEventEmitter, NativeModules} from 'react-native';
 //import {useDate} from '../../context/Date';
 
 const HeartRate = () => {
-  const [heartRate, setHeartRate] = useState<number | null>(0);
+  const [heartRate, setHeartRate] = useState<number>(0);
   // const {startDate, endDate} = useDate();
 
   // const options = {

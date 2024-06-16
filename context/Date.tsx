@@ -32,12 +32,14 @@ export const DateProvider: React.FC<React.PropsWithChildren> = ({children}) => {
   const [startDate, setStartDate] = useState(startOfToday);
   const [endDate, setEndDate] = useState(endOfDay);
 
-  const value = useMemo(
+  const valuedate = useMemo(
     () => ({startDate, setStartDate, endDate, setEndDate}),
     [startDate, endDate],
   );
 
-  return <DateContext.Provider value={value}>{children}</DateContext.Provider>;
+  return (
+    <DateContext.Provider value={valuedate}>{children}</DateContext.Provider>
+  );
 };
 
 export {useDate, DateContext};

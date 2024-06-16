@@ -17,13 +17,6 @@ const Mindfulness = () => {
     unit: 'meter', // optional; default meter
   };
 
-  // const getTotalMindfulness = (results: HealthValue[]) =>
-  //   results?.reduce(
-  //     (sum, {endDate, startDate}) =>
-  //       sum + getMinsDifference(startDate, endDate),
-  //     0,
-  //   ) || 0;
-
   const fetchMindFullness = useCallback(() => {
     return AppleHealthKit?.getDistanceWalkingRunning(
       options,

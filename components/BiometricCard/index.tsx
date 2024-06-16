@@ -1,15 +1,7 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View} from 'react-native';
-import {
-  Avatar,
-  Card,
-  MD3Colors,
-  ProgressBar,
-  Text,
-  useTheme,
-} from 'react-native-paper';
+import {Avatar, Card, Text, useTheme} from 'react-native-paper';
 import CircularProgress from 'react-native-circular-progress-indicator';
 
 const Icon = ({icon, color}: {icon: string; color?: string}) => {
@@ -42,9 +34,6 @@ const BiometricCard: React.FC<BiometricCardProps> = ({
   onPress,
 }) => {
   const theme = useTheme();
-  function alert(arg0: string) {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <Card
@@ -87,24 +76,6 @@ const BiometricCard: React.FC<BiometricCardProps> = ({
               {unit}
             </Text>
           </View>
-        </View>
-
-        <View style={{width: '25%'}}>
-          <CircularProgress
-            value={value}
-            radius={30}
-            inActiveStrokeOpacity={0.5}
-            activeStrokeWidth={15}
-            inActiveStrokeWidth={20}
-            progressValueStyle={{fontWeight: '100', color: 'white'}}
-            activeStrokeSecondaryColor="yellow"
-            inActiveStrokeColor="black"
-            duration={5000}
-            dashedStrokeConfig={{
-              count: 50,
-              width: 4,
-            }}
-          />
         </View>
       </Card.Content>
     </Card>
