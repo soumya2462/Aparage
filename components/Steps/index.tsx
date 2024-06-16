@@ -4,6 +4,7 @@ import {useCallback, useEffect, useState} from 'react';
 import BiometricCard from '../BiometricCard';
 import AppleHealthKit, {HealthValue} from 'react-native-health';
 import {useDate} from '../../context/Date';
+import {NativeEventEmitter, NativeModules} from 'react-native';
 
 const Steps = () => {
   const [steps, setSteps] = useState(0);
@@ -29,7 +30,14 @@ const Steps = () => {
   useEffect(() => {
     fetchSteps();
   }, [fetchSteps, startDate, endDate]);
-
+  useEffect(() => {
+    new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
+      'healthKit:HeartRate:new',
+      async () => {
+        console.log('--> observer triggered');
+      },
+    );
+  });
   return (
     <BiometricCard
       icon="walk"

@@ -27,7 +27,8 @@ AppleHealthKit?.initHealthKit(permissions, (error: string) => {
   /* Called after we receive a response from the system */
 
   if (error) {
-    console.log('[ERROR] Cannot grant permissions!');
+    console.log('[ERROR] Cannot grant permissions!', error);
+    return;
   }
 });
 

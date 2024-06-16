@@ -1,33 +1,35 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/react-in-jsx-scope */
 import {useCallback, useEffect, useState} from 'react';
 import BiometricCard from '../BiometricCard';
 import AppleHealthKit, {HealthValue} from 'react-native-health';
 import {useDate} from '../../context/Date';
-import {getMinsDifference} from '../../utils';
 
 const Mindfulness = () => {
   const [mindfulness, setMindfulness] = useState(0);
   const {startDate, endDate} = useDate();
 
   const options = {
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
+    startDate: startDate.toISOString(), // required
+    endDate: endDate.toISOString(), // optional; default now
+    ascending: false, // optional; default false
+    limit: 10, // optional; default no limit
+    unit: 'meter', // optional; default meter
   };
 
-  const getTotalMindfulness = (results: HealthValue[]) =>
-    results?.reduce(
-      (sum, {endDate, startDate}) =>
-        sum + getMinsDifference(startDate, endDate),
-      0,
-    ) || 0;
+  // const getTotalMindfulness = (results: HealthValue[]) =>
+  //   results?.reduce(
+  //     (sum, {endDate, startDate}) =>
+  //       sum + getMinsDifference(startDate, endDate),
+  //     0,
+  //   ) || 0;
 
   const fetchMindFullness = useCallback(() => {
-    AppleHealthKit?.getMindfulSession(
+    return AppleHealthKit?.getDistanceWalkingRunning(
       options,
-      (callbackError: string, results: HealthValue[]) => {
-        setMindfulness(getTotalMindfulness(results));
+      (callbackError: string, results: HealthValue) => {
+        setMindfulness(Math.round(results.value));
+        console.error('getDistanceWalkingRunning', results);
         if (callbackError) {
           console.error(callbackError);
         }
@@ -37,14 +39,15 @@ const Mindfulness = () => {
 
   useEffect(() => {
     fetchMindFullness();
+    console.error('getDistanceWalkingRunningdate', startDate);
   }, [fetchMindFullness, startDate, endDate]);
 
   return (
     <BiometricCard
-      icon="brain"
-      title="Mindfulness"
+      icon="run-fast"
+      title="Walking & Running Distance"
       value={mindfulness}
-      unit="mins"
+      unit="meter"
     />
   );
 };

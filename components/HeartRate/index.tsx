@@ -3,34 +3,51 @@
 import {useCallback, useEffect, useState} from 'react';
 import BiometricCard from '../BiometricCard';
 import AppleHealthKit, {HealthValue} from 'react-native-health';
-import {useDate} from '../../context/Date';
+import {NativeEventEmitter, NativeModules} from 'react-native';
+//import {useDate} from '../../context/Date';
 
 const HeartRate = () => {
-  const [heartRate, setHeartRate] = useState(0);
-  const {startDate, endDate} = useDate();
+  const [heartRate, setHeartRate] = useState<number | null>(0);
+  // const {startDate, endDate} = useDate();
 
+  // const options = {
+  //   startDate: startDate.toISOString(),
+  //   endDate: endDate.toISOString(),
+  //   unit: 'bpm', // Assuming the unit is beats per minute
+  // };
   const options = {
     unit: 'bpm', // optional; default 'bpm'
-    startDate: startDate.toISOString(),
-    endDate: endDate.toISOString(),
-    ascending: false, // optional; default false
-    limit: 10, // optional; default no limit
+    startDate: new Date(2024, 5, 14).toISOString(), // required
+    // endDate: new Date().toISOString(), // optional; default now
+    // ascending: false, // optional; default false
+    //limit: 10, // optional; default no limit
   };
-
-  const getAverageHeartRate = (results: HealthValue[]) => {
-    const heartRateSum = results?.reduce((sum, {value}) => sum + value, 0);
-
-    return heartRateSum ? heartRateSum / results.length : 0;
-  };
-
+  // useEffect(() => {
+  //   new NativeEventEmitter(NativeModules.AppleHealthKit).addListener(
+  //     'healthKit:HeartRate:new',
+  //     async () => {
+  //       console.log('--> observer triggered');
+  //     },
+  //   );
+  // });
   const fetchHeartRate = useCallback(() => {
-    AppleHealthKit?.getHeartRateSamples(
+    // console.log('options', options);
+
+    AppleHealthKit.getHeartRateSamples(
       options,
       (callbackError: string, results: HealthValue[]) => {
-        setHeartRate(getAverageHeartRate(results));
-
         if (callbackError) {
           console.error(callbackError);
+          return;
+        }
+
+        if (results && results.length > 0) {
+          const latestHeartRate = results[results.length - 1].value;
+          // console.error('results', results[results.length - 1]);
+
+          setHeartRate(latestHeartRate);
+        } else {
+          setHeartRate(0);
         }
       },
     );
@@ -38,13 +55,12 @@ const HeartRate = () => {
 
   useEffect(() => {
     fetchHeartRate();
-  }, [fetchHeartRate, startDate, endDate]);
+  }, [fetchHeartRate]);
 
   return (
     <BiometricCard
       icon="heart"
-      iconColor="red"
-      title="Heart Rate"
+      title="last Heart Rate record "
       value={heartRate}
       unit="bpm"
     />
