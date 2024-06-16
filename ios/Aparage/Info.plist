@@ -27,34 +27,30 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<false/>
-		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-    <key>UIBackgroundModes</key>
-    <array>
-        <string>fetch</string>
-        <string>remote-notification</string>
-    </array>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>We use your location to show localized content</string>
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>We use your location to show localized content</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>We use your location to show localized content</string>
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
 	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
 	<string>Read and understand clinical health data.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>We need access to your health data to track your activities.</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>We need access to your health data to track your activities.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We use your location to show localized content</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We use your location to show localized content</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>processing</string>
+    </array>
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+        <string>com.bipros.aparage</string> <!-- Replace with your actual identifier(s) -->
+        <string>com.bipros.aparage.processing</string> <!-- Add more identifiers as needed -->
+    </array>
+    
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -81,7 +77,7 @@
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>arm64</string>
