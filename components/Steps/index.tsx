@@ -64,7 +64,7 @@ const Steps = () => {
 
     // Schedule the notification after 2000 milliseconds (2 seconds)
     const timer = setTimeout(() => {
-      scheduleNotification(steps);
+      scheduleNotification(Math.round(steps), false);
     }, 2000);
 
     // Cleanup the timer if the component unmounts before the timer completes
@@ -75,7 +75,7 @@ const Steps = () => {
     // Configure Background Fetch
     BackgroundFetch.configure(
       {
-        minimumFetchInterval: 15, // Fetch every 15 minutes
+        minimumFetchInterval: 2, // Fetch every 15 minutes
         stopOnTerminate: false,
         startOnBoot: true,
       },
@@ -85,7 +85,7 @@ const Steps = () => {
 
         // Check if step count exceeds threshold and schedule a notification
         if (steps > STEP_THRESHOLD) {
-          scheduleNotification(steps);
+          scheduleNotification(steps, true);
         }
 
         BackgroundFetch.finish(taskId);
@@ -119,10 +119,14 @@ const Steps = () => {
       },
     );
   });
-  const scheduleNotification = (value: number) => {
+  const scheduleNotification = (value: number, p0: boolean) => {
     Notifications.postLocalNotification({
-      title: 'Step Count Alert',
-      body: `Congratulations! You've crossed ${value} steps today!`,
+      title: p0 ? 'Goal Achieved!' : 'Almost There!',
+      body: p0
+        ? `Congratulations! You've crossed ${value} steps today and achieved your goal. Fantastic work!`
+        : `Great job! You've crossed ${value} steps today. Just ${
+            STEP_THRESHOLD - value
+          } more to reach your daily goal. Keep moving!`,
       extra: 'data',
       silent: false,
       category: 'STEP_COUNT',
