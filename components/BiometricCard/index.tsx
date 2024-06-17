@@ -22,6 +22,7 @@ type BiometricCardProps = {
   title: string;
   value: number;
   unit: string;
+  holdvalue?: number;
   onPress?: () => void;
 };
 
@@ -31,6 +32,7 @@ const BiometricCard: React.FC<BiometricCardProps> = ({
   title,
   value,
   unit,
+  holdvalue,
   onPress,
 }) => {
   const theme = useTheme();
@@ -71,12 +73,29 @@ const BiometricCard: React.FC<BiometricCardProps> = ({
               gap: 8,
               alignItems: 'baseline',
             }}>
-            <Text style={{fontSize: 42}}>{value}</Text>
+            <Text style={{fontSize: 42}}>
+              {value}
+              {holdvalue !== undefined ? (
+                <Text style={{fontSize: 22, color: 'red'}}>/{holdvalue}</Text>
+              ) : null}
+            </Text>
             <Text style={{fontSize: 18, fontWeight: '500', opacity: 0.8}}>
               {unit}
             </Text>
           </View>
         </View>
+        {holdvalue !== undefined ? (
+          <View style={{display: 'flex', justifyContent: 'center'}}>
+            <CircularProgress
+              value={(value / holdvalue) * 100 || 0}
+              inActiveStrokeColor={'#2ecc71'}
+              inActiveStrokeOpacity={0.2}
+              progressValueColor={'red'}
+              valueSuffix={'%'}
+              radius={40}
+            />
+          </View>
+        ) : null}
       </Card.Content>
     </Card>
   );

@@ -2,8 +2,6 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {PaperProvider} from 'react-native-paper';
-import {useColorScheme} from 'react-native';
-import {getTheme} from './theme';
 import Home from './pages/Home';
 import Splash from './pages/Splash';
 import {Notifications} from 'react-native-notifications';
@@ -11,8 +9,6 @@ import {Notifications} from 'react-native-notifications';
 const Stack = createStackNavigator();
 
 export default function App() {
-  const colorScheme = useColorScheme();
-
   useEffect(() => {
     // Register for remote notifications
     Notifications.registerRemoteNotifications();
@@ -31,7 +27,7 @@ export default function App() {
   }, []);
 
   return (
-    <PaperProvider children={undefined}>
+    <PaperProvider>
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName="Splash"
